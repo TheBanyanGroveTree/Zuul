@@ -4,9 +4,14 @@
 
 using namespace std;
 
-// define default constructor
-Room::Room() {
+// define constructor
+Room::Room(char* description) {
+  this->description = description;
+}
 
+// define method to get room description
+char* Room::getDescription() {
+  return description;
 }
 
 // define destructor
