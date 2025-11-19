@@ -10,16 +10,16 @@ class Room {
  public:
   Room(char*);
   char* getDescription();
-  void setExit(char*, Room);
-  char* getExitString();
-  Room getExitRoom(char*);
-  void setItem(Item);
-  Item getItem(char*);
-  void getRoomItemsDescription();
-  void removeItem(char*)
+  void setExit(char*, Room*);
+  char* getExitDescriptions();
+  Room* getExitRoom(char*);
+  void setItem(Item*);
+  Item* getItem(char*);
+  void getRoomItemDescriptions();
+  void removeItem(char*);
   ~Room();
  private:
   char* description;
-  map<int, char*> exits;
-  vector<Item> items;
+  map<char*, Room*> exits;
+  vector<Item*> items;
 };
