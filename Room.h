@@ -1,3 +1,6 @@
+#ifndef ROOM_H
+#define ROOM_H
+
 #include <iostream>
 #include <cstring>
 #include <map>
@@ -8,8 +11,8 @@ using namespace std;
 
 class Room {
  public:
-  Room(char*);
-  char* getDescription();
+  Room(const char*);
+  const char* getDescription();
   void setExit(char*, Room*);
   char* getExitDescriptions();
   Room* getExitRoom(char*);
@@ -19,7 +22,9 @@ class Room {
   void removeItem(char*);
   ~Room();
  private:
-  char* description;
+  const char* description;
   map<char*, Room*> exits;
   vector<Item*> items;
 };
+
+#endif

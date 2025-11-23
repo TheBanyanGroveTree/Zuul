@@ -5,12 +5,12 @@
 using namespace std;
 
 // define constructor
-Room::Room(char* description) {
+Room::Room(const char* description) {
   this->description = description;
 }
 
 // define method to get room description
-char* Room::getDescription() {
+const char* Room::getDescription() {
   return description;
 }
 
