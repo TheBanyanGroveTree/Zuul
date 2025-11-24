@@ -63,7 +63,7 @@ class Game
         library = new Room("in the quietest room");
         upperGym = new Room("on the second floor");
         gym = new Room("in the middle of flying balls");
-        auditorium = new Room("interupting rehearsals for the school play");
+        auditorium = new Room("interrupting rehearsals for the school play");
         aHall = new Room("where the English classes are");
         
         // initialize room exits
