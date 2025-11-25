@@ -13,7 +13,7 @@ class Room {
  public:
   Room(const char*);
   const char* getDescription();
-  void setExit(char*, Room*);
+  void setExit(const char*, Room*);
   char* getExitDescriptions();
   Room* getExitRoom(char*);
   void setItem(Item*);
@@ -23,7 +23,7 @@ class Room {
   ~Room();
  private:
   const char* description;
-  map<char*, Room*> exits;
+  map<const char*, Room*> exits;
   vector<Item*> items;
 };
 

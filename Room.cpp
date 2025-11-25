@@ -15,7 +15,7 @@ const char* Room::getDescription() {
 }
 
 // define method to add exit from this room
-void Room::setExit(char* direction, Room* neighbor) {
+void Room::setExit(const char* direction, Room* neighbor) {
   exits[direction] = neighbor;
 }
 
