@@ -8,11 +8,11 @@ using namespace std;
 
 class Item {
  public:
-  Item(char*);
-  char* getDescription();
+  Item(const char*);
+  const char* getDescription();
   ~Item();
  private:
-  char* description;
+  const char* description;
 };
 
 #endif

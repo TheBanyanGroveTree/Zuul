@@ -141,7 +141,48 @@ int main() {
   aHall->setExit(WEST, auditorium);
   
   // declare vector of items for inventory
+  vector<Item*> inventory;
+
   // instantiate items and add to vector
+  const char* slipDesc = "Slip";
+  Item* slip = new Item(slipDesc);
+  inventory.push_back(slip);
+  mainOffice->setItem(slip);
+
+  const char* robotDesc = "Robot";
+  Item* robot = new Item(robotDesc);
+  inventory.push_back(robot);
+  oneTwenty->setItem(robot);
+
+  const char* protractorDesc = "Protractor";
+  Item* protractor = new Item(protractorDesc);
+  inventory.push_back(protractor);
+  mathClass->setItem(protractor);
+
+  const char* acidDesc = "Acid";
+  Item* acid = new Item(acidDesc);
+  inventory.push_back(acid);
+  scienceClass->setItem(acid);
+
+  const char* bananaDesc = "Banana";
+  Item* banana = new Item(bananaDesc);
+  inventory.push_back(banana);
+  cafeteria->setItem(banana);
+
+  const char* bookDesc = "Book";
+  Item* book = new Item(bookDesc);
+  inventory.push_back(book);
+  library->setItem(book);
+
+  const char* speakersDesc = "Speakers";
+  Item* speakers = new Item(speakersDesc);
+  inventory.push_back(speakers);
+  auditorium->setItem(speakers);
+
+  const char* basketballDesc = "Basketball";
+  Item* basketball = new Item(basketballDesc);
+  inventory.push_back(basketball);
+  gym->setItem(basketball);
 
   // print game instructions
 
