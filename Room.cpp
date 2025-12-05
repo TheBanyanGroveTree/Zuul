@@ -36,7 +36,12 @@ void Room::setItem(Item* newItem) {
 
 // define method to return item given it's name
 Item* Room::getItem(char* itemName) {
-
+  for (int i = 0; i < items.size(); i++) {
+    if (strcmp(items[i]->getDescription(), itemName)) {
+      return items[i];
+    }
+  }
+  return nullptr;
 }
 
 // define method to get a description of the items in a room
