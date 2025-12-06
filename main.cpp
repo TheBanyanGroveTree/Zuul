@@ -11,6 +11,8 @@
 
 using namespace std;
 
+void printGameInstructions();
+
 int main() {
   // declare vector of room pointers
   vector<Room*> rooms;
@@ -189,4 +191,22 @@ int main() {
   // continue prompting user for input until QUIT command
   
   return 0;
+}
+
+// define method to print game instructions
+void printGameInstructions() {
+  // instructions
+  cout << "Welcome to Zuul, where you must not be a fool to escape.";
+  cout << "You're currently trapped inside the abandoned Sunset High School, "
+       << "where horrors like dangerous bananas and acids lurk the halls.";
+  cout << "In order to save your life, you must successfully retrieve the "
+       << "robot and make your way to the upper gym.";
+  cout << "Good luck, and may the odds be ever in your favor." << endl;
+  
+  // help
+  cout << "Type HELP if you get lost." << endl;
+
+  // current room description
+  //cout << "You are in " << currentRoom->getDescription() + "
+  
 }
