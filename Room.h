@@ -11,9 +11,9 @@ using namespace std;
 
 class Room {
  public:
-  Room(const char*);
-  const char* getDescription();
-  void setExit(const char*, Room*);
+  Room(char*);
+  char* getDescription();
+  void setExit(char*, Room*);
   char* getExitDescriptions();
   Room* getExitRoom(char*);
   void setItem(Item*);
@@ -22,8 +22,8 @@ class Room {
   void removeItem(char*);
   ~Room();
  private:
-  const char* description;
-  map<const char*, Room*> exits;
+  char* description;
+  map<char*, Room*> exits;
   vector<Item*> items;
 };
 

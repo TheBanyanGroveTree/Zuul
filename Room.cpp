@@ -5,17 +5,17 @@
 using namespace std;
 
 // define constructor
-Room::Room(const char* description) {
+Room::Room(char* description) {
   this->description = description;
 }
 
 // define method to get room description
-const char* Room::getDescription() {
+char* Room::getDescription() {
   return description;
 }
 
 // define method to add exit from this room
-void Room::setExit(const char* direction, Room* neighbor) {
+void Room::setExit(char* direction, Room* neighbor) {
   exits[direction] = neighbor;
 }
 

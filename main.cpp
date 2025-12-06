@@ -1,6 +1,6 @@
 /* Description: Zuul
    Author: Aahana Sapra
-   Date: 11/24/2025
+   Date: 12/5/2025
  */
 
 #include <iostream>
@@ -11,82 +11,89 @@
 
 using namespace std;
 
+// function prototypes
 void printGameInstructions();
+bool goRoom();
+bool checkInventory();
+void getItem();
+void dropItem();
+void printInventory();
+void printHelp();
 
 int main() {
   // declare vector of room pointers
   vector<Room*> rooms;
   
   // instantiate room objects and add to vector
-  const char* OUTSIDE_DESC = "outside the main entrance of the campus";
-  Room* outside = new Room(OUTSIDE_DESC);
+  char outsideDesc[] = "outside the main entrance of the campus";
+  Room* outside = new Room(outsideDesc);
   rooms.push_back(outside);
 
-  const char* MAIN_OFFICE_DESC = "in the main office getting your late slip";
-  Room* mainOffice = new Room(MAIN_OFFICE_DESC);
+  char mainOfficeDesc[] = "in the main office getting your late slip";
+  Room* mainOffice = new Room(mainOfficeDesc);
   rooms.push_back(mainOffice);
 
-  const char* COUNSELOR_OFFICE_DESC = "in the counselor's office to talk";
-  Room* counselorOffice = new Room(COUNSELOR_OFFICE_DESC);
+  char counselorOfficeDesc[] = "in the counselor's office to talk";
+  Room* counselorOffice = new Room(counselorOfficeDesc);
   rooms.push_back(counselorOffice);
   
-  const char* ONE_TWENTY_DESC = "in the coolest place in the world";
-  Room* oneTwenty = new Room(ONE_TWENTY_DESC);
+  char oneTwentyDesc[] = "in the coolest place in the world";
+  Room* oneTwenty = new Room(oneTwentyDesc);
   rooms.push_back(oneTwenty);
 
-  const char* COURTYARD_DESC = "outside surrounded by benches";
-  Room* courtyard = new Room(COURTYARD_DESC);
+  char courtyardDesc[] = "outside surrounded by benches";
+  Room* courtyard = new Room(courtyardDesc);
   rooms.push_back(courtyard);
 
-  const char* MAIN_HALL_DESC = "in main hall";
-  Room* mainHall = new Room(MAIN_HALL_DESC);
+  char mainHallDesc[] = "in main hall";
+  Room* mainHall = new Room(mainHallDesc);
   rooms.push_back(mainHall);
 
-  const char* RESTROOM_DESC = "taking a ten minute break from class to use the \"restroom\"";
-  Room* restroom = new Room(RESTROOM_DESC);
+  char restroomDesc[] = "taking a ten minute break from class to use the \"restroom\"";
+  Room* restroom = new Room(restroomDesc);
   rooms.push_back(restroom);
 
-  const char* MATH_CLASS_DESC = "in the boringest room in the entire school";
-  Room* mathClass = new Room(MATH_CLASS_DESC);
+  char mathClassDesc[] = "in the boringest room in the entire school";
+  Room* mathClass = new Room(mathClassDesc);
   rooms.push_back(mathClass);
 
-  const char* ONE_HALL_DESC = "getting trampled by the masses in one hall";
-  Room* oneHall = new Room(ONE_HALL_DESC);
+  char oneHallDesc[] = "getting trampled by the masses in one hall";
+  Room* oneHall = new Room(oneHallDesc);
   rooms.push_back(oneHall);
 
-  const char* SCIENCE_CLASS_DESC = "surrounded by hazardous substances. Be careful";
-  Room* scienceClass = new Room(SCIENCE_CLASS_DESC);
+  char scienceClassDesc[] = "surrounded by hazardous substances. Be careful";
+  Room* scienceClass = new Room(scienceClassDesc);
   rooms.push_back(scienceClass);
 
-  const char* CAFETERIA_DESC = "eating a nutritious and delicious school lunch";
-  Room* cafeteria = new Room(CAFETERIA_DESC);
+  char cafeteriaDesc[] = "eating a nutritious and delicious school lunch";
+  Room* cafeteria = new Room(cafeteriaDesc);
   rooms.push_back(cafeteria);
 
-  const char* LIBRARY_DESC = "in the quietest room";
-  Room* library = new Room(LIBRARY_DESC);
+  char libraryDesc[] = "in the quietest room";
+  Room* library = new Room(libraryDesc);
   rooms.push_back(library);
 
-  const char* UPPER_GYM_DESC = "on the second floor";
-  Room* upperGym = new Room(UPPER_GYM_DESC);
+  char upperGymDesc[] = "on the second floor";
+  Room* upperGym = new Room(upperGymDesc);
   rooms.push_back(upperGym);
 
-  const char* GYM_DESC = "in the middle of flying balls";
-  Room* gym =  new Room(GYM_DESC);
+  char gymDesc[] = "in the middle of flying balls";
+  Room* gym =  new Room(gymDesc);
   rooms.push_back(gym);
 
-  const char* AUDITORIUM_DESC = "interrupting rehearsals for the school play";
-  Room* auditorium = new Room(AUDITORIUM_DESC);
+  char auditoriumDesc[] = "interrupting rehearsals for the school play";
+  Room* auditorium = new Room(auditoriumDesc);
   rooms.push_back(auditorium);
 
-  const char* A_HALL_DESC = "where the English classes are";
-  Room* aHall = new Room(A_HALL_DESC);
+  char aHallDesc[] = "where the English classes are";
+  Room* aHall = new Room(aHallDesc);
   rooms.push_back(aHall);
-  
+
   // initialize room exits
-  const char* NORTH = "NORTH";
-  const char* SOUTH = "SOUTH";
-  const char* WEST = "WEST";
-  const char* EAST = "EAST";
+  char NORTH[] = "NORTH";
+  char SOUTH[] = "SOUTH";
+  char WEST[] = "WEST";
+  char EAST[] = "EAST";
 
   outside->setExit(NORTH, mainOffice);
 
@@ -146,49 +153,93 @@ int main() {
   vector<Item*> inventory;
 
   // instantiate items and add to vector
-  const char* slipDesc = "Slip";
+  char slipDesc[] = "Slip";
   Item* slip = new Item(slipDesc);
   inventory.push_back(slip);
   mainOffice->setItem(slip);
 
-  const char* robotDesc = "Robot";
+  char robotDesc[] = "Robot";
   Item* robot = new Item(robotDesc);
   inventory.push_back(robot);
   oneTwenty->setItem(robot);
 
-  const char* protractorDesc = "Protractor";
+  char protractorDesc[] = "Protractor";
   Item* protractor = new Item(protractorDesc);
   inventory.push_back(protractor);
   mathClass->setItem(protractor);
 
-  const char* acidDesc = "Acid";
+  char acidDesc[] = "Acid";
   Item* acid = new Item(acidDesc);
   inventory.push_back(acid);
   scienceClass->setItem(acid);
 
-  const char* bananaDesc = "Banana";
+  char bananaDesc[] = "Banana";
   Item* banana = new Item(bananaDesc);
   inventory.push_back(banana);
   cafeteria->setItem(banana);
 
-  const char* bookDesc = "Book";
+  char bookDesc[] = "Book";
   Item* book = new Item(bookDesc);
   inventory.push_back(book);
   library->setItem(book);
 
-  const char* speakersDesc = "Speakers";
+  char speakersDesc[] = "Speakers";
   Item* speakers = new Item(speakersDesc);
   inventory.push_back(speakers);
   auditorium->setItem(speakers);
 
-  const char* basketballDesc = "Basketball";
+  char basketballDesc[] = "Basketball";
   Item* basketball = new Item(basketballDesc);
   inventory.push_back(basketball);
   gym->setItem(basketball);
 
   // print game instructions
+  printGameInstructions();
 
+  // declare char arr for user input
+  const int INPUT_LENGTH = 81;
+  char userCommand[INPUT_LENGTH];
+  
   // continue prompting user for input until QUIT command
+  bool playing = true;
+  while (playing) {
+    // read in user input
+    cout << "Enter a command: ";
+    cin.getline(userCommand, INPUT_LENGTH);
+
+    // convert input to uppercase for comparison
+    for (int i = 0; i < strlen(userCommand); i++) {
+      userCommand[i] = toupper(userCommand[i]);
+    }
+
+    // validate input
+    if (strcmp(userCommand, "GO") == 0) {
+
+    } else if (strcmp(userCommand, "GET") == 0) {
+
+    } else if (strcmp(userCommand, "DROP") == 0) {
+
+    } else if (strcmp(userCommand, "INVENTORY") == 0) {
+
+    } else if (strcmp(userCommand, "HELP") == 0) {
+
+    } else if (strcmp(userCommand, "QUIT") == 0) {
+      // clear vectors
+      for (Room* ptr : rooms) {
+	delete ptr;
+      }
+      rooms.clear();
+
+      for (Item* ptr : inventory) {
+	delete ptr;
+      }
+      inventory.clear();
+      
+      playing = false;
+    } else { // invalid input
+      cout << "Please enter a valid command." << endl;
+    }
+  }
   
   return 0;
 }
