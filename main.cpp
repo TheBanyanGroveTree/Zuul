@@ -12,12 +12,12 @@
 using namespace std;
 
 // function prototypes
-void printGameInstructions();
+void printGameInstructions(Room* currentRoom);
 bool goRoom();
-bool checkInventory();
+bool checkInventory(vector<Item*>& inventory);
 void getItem();
 void dropItem();
-void printInventory();
+void printInventory(vector<Item*>& inventory);
 void printHelp();
 
 int main() {
@@ -88,6 +88,9 @@ int main() {
   char aHallDesc[] = "where the English classes are";
   Room* aHall = new Room(aHallDesc);
   rooms.push_back(aHall);
+
+  // set starting point
+  Room* currentRoom = mainOffice;
 
   // initialize room exits
   char NORTH[] = "NORTH";
@@ -194,7 +197,7 @@ int main() {
   gym->setItem(basketball);
 
   // print game instructions
-  printGameInstructions();
+  printGameInstructions(currentRoom);
 
   // declare char arr for user input
   const int INPUT_LENGTH = 81;
@@ -244,11 +247,11 @@ int main() {
   return 0;
 }
 
-// define method to print game instructions
-void printGameInstructions() {
+// Define method to print game instructions
+void printGameInstructions(Room* currentRoom) {
   // instructions
   cout << "Welcome to Zuul, where you must not be a fool to escape.";
-  cout << "You're currently trapped inside the abandoned Sunset High School, "
+  cout << "You're currently trapped inside the abandoned Sunset High School campus, "
        << "where horrors like dangerous bananas and acids lurk the halls.";
   cout << "In order to save your life, you must successfully retrieve the "
        << "robot and make your way to the upper gym.";
@@ -258,6 +261,30 @@ void printGameInstructions() {
   cout << "Type HELP if you get lost." << endl;
 
   // current room description
-  //cout << "You are in " << currentRoom->getDescription() + "
-  
+  currentRoom->printLongDescription();
+}
+
+// Check if robot item is in the player's inventory
+bool checkInventory(vector<Item*>& inventory) {
+  for (auto it = inventory.begin(); it != inventory.end(); ++it) {
+    if (strcmp("Robot", (*it)->getDescription()) == 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Define method to output items in inventory
+void printInventory(vector<Item*>& inventory) {
+  cout << "You are carrying:";
+  for (auto it = inventory.begin(); it != inventory.end(); ++it) {
+    cout << " " << (*it)->getDescription();
+  }
+  cout << endl;
+}
+
+// Define method to print list of command words
+void printHelp() {
+  cout << "You are lost. You are alone. You wander around the campus." << endl;
+  cout << "Your command words are: GO GET DROP INVENTORY HELP QUIT" << endl;
 }

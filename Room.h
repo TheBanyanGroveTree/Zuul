@@ -12,13 +12,12 @@ using namespace std;
 class Room {
  public:
   Room(char*);
-  char* getDescription();
+  char* getShortDescription();
   void setExit(char*, Room*);
-  char* getExitDescriptions();
+  void printLongDescription();
   Room* getExitRoom(char*);
   void setItem(Item*);
   Item* getItem(char*);
-  void getRoomItemDescriptions();
   void removeItem(char*);
   ~Room();
  private:

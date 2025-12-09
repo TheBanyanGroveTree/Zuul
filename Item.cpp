@@ -4,17 +4,17 @@
 
 using namespace std;
 
-// define constructor
+// Define constructor
 Item::Item(char* description) {
   this->description = description;
 }
 
-// define method to get item description
+// Define method to get item description
 char* Item::getDescription() {
   return description;
 }
 
-// define destructor
+// Define destructor
 Item::~Item() {
   delete description;
 }
