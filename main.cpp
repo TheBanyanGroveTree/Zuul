@@ -1,6 +1,7 @@
-/* Description: Zuul
+/**
+   Description: Zuul
    Author: Aahana Sapra
-   Date: 12/5/2025
+   Date: 12/12/2025
  */
 
 #include <iostream>
@@ -12,10 +13,12 @@
 using namespace std;
 
 // function prototypes
-void printGameInstructions(Room* currentRoom);
-bool goRoom();
+void printGameInstructions(Room*& currentRoom);
+bool goRoom(const int& INPUT_LENGTH, Room*& currentRoom,
+	    Room*& upperGym, vector<Item*>& inventory);
 bool checkInventory(vector<Item*>& inventory);
-void getItem();
+void getItem(const int& INPUT_LENGTH, Room*& currentRoom,
+	     vector<Item*>& inventory);
 void dropItem();
 void printInventory(vector<Item*>& inventory);
 void printHelp();
@@ -248,7 +251,7 @@ int main() {
 }
 
 // Define method to print game instructions
-void printGameInstructions(Room* currentRoom) {
+void printGameInstructions(Room*& currentRoom) {
   // instructions
   cout << "Welcome to Zuul, where you must not be a fool to escape.";
   cout << "You're currently trapped inside the abandoned Sunset High School campus, "
@@ -262,6 +265,65 @@ void printGameInstructions(Room* currentRoom) {
 
   // current room description
   currentRoom->printLongDescription();
+}
+
+/* Enter a new room if there is an exit in the given direction.
+   Player wins the game if they are in the upper gym with the Robot item
+   in their inventory.
+ */
+bool goRoom(const int& INPUT_LENGTH, Room*& currentRoom,
+	    Room*& upperGym, vector<Item*>& inventory) {
+  // ask user for direction
+  char userDirection[INPUT_LENGTH];
+  cout << "Enter a direction: ";
+  cin.getline(userDirection, INPUT_LENGTH);
+
+  // convert direction input to uppercase for comparison
+  for (int i = 0; i < strlen(userDirection); i++) {
+    userDirection[i] = toupper(userDirection[i]);
+  }
+
+  // check if exit exists
+  bool exitExists = currentRoom->searchDirection(userDirection);
+
+  // enter new room if possible
+  if (exitExists) {
+    Room* newRoom = currentRoom->getExitRoom(userDirection);
+    currentRoom = newRoom;
+    currentRoom->printLongDescription();
+    
+    // check for winning condition
+    if ((currentRoom == upperGym) && (checkInventory(inventory))) {
+      cout << "Congratulations, you somehow managed to escape!" << endl;
+      delete newRoom;
+      return true;
+    }
+  } else {
+    cout << "There is no exit in that direction." << endl;
+  }
+  
+  return false;
+}
+
+// Pick up item from current room and add it to inventory
+void getItem(const int& INPUT_LENGTH, Room*& currentRoom,
+	     vector<Item*>& inventory) {
+  // prompt user for item
+  char userItem[INPUT_LENGTH];
+  cout << "Enter an item: ";
+  cin.getline(userItem, INPUT_LENGTH);
+
+  Item* newItem = currentRoom->getItem(userItem);
+
+  if (newItem == nullptr) {
+    cout << "That item is not here." << endl;
+  } else {
+    inventory.push_back(newItem);
+    currentRoom->removeItem(userItem);
+    cout << "Picked up: " << newItem->getDescription() << endl;
+  }
+
+  delete newItem;
 }
 
 // Check if robot item is in the player's inventory

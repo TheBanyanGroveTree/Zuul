@@ -42,6 +42,16 @@ void Room::printLongDescription() {
   cout << endl;
 }
 
+// Define method to search for direction key in exits map
+bool Room::searchDirection(char* direction) {
+  auto it = exits.find(direction);
+
+  if (it != exits.end()) { // key found
+    return true;
+  }
+  return false; // key NOT found
+}
+
 // Define method to return destination room when moving in specified direction
 Room* Room::getExitRoom(char* direction) {
   return exits[direction];

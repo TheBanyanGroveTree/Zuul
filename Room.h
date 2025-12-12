@@ -15,6 +15,7 @@ class Room {
   char* getShortDescription();
   void setExit(char*, Room*);
   void printLongDescription();
+  bool searchDirection(char*);
   Room* getExitRoom(char*);
   void setItem(Item*);
   Item* getItem(char*);
