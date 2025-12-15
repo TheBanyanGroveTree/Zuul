@@ -16,5 +16,5 @@ char* Item::getDescription() {
 
 // Define destructor
 Item::~Item() {
-  delete description;
+  // do NOT delete description because it's a string literal
 }

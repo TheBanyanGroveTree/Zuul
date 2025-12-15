@@ -1,12 +1,18 @@
 /**
-   Description: Zuul
+   Description: Zuul is a simple, text-based adventure game. This rendition
+   takes place in a school and the players must navigate to the Upper Gym
+   and have the Robot item in their inventory to win. Their commands are:
+   GO, GET, DROP, INVENTORY, HELP, and QUIT (end game).
    Author: Aahana Sapra
-   Date: 12/12/2025
+   Date: 12/15/2025
  */
 
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <limits>
+#include <ios>
+#include <algorithm>
 #include "Room.h"
 #include "Item.h"
 
@@ -14,12 +20,12 @@ using namespace std;
 
 // function prototypes
 void printGameInstructions(Room*& currentRoom);
-bool goRoom(const int& INPUT_LENGTH, Room*& currentRoom,
-	    Room*& upperGym, vector<Item*>& inventory);
+bool goRoom(Room*& currentRoom, Room*& upperGym, vector<Item*>& inventory);
 bool checkInventory(vector<Item*>& inventory);
 void getItem(const int& INPUT_LENGTH, Room*& currentRoom,
 	     vector<Item*>& inventory);
-void dropItem();
+void dropItem(const int& INPUT_LENGTH, Room*& currentRoom,
+	      vector<Item*>& inventory);
 void printInventory(vector<Item*>& inventory);
 void printHelp();
 
@@ -96,10 +102,10 @@ int main() {
   Room* currentRoom = mainOffice;
 
   // initialize room exits
-  char NORTH[] = "NORTH";
-  char SOUTH[] = "SOUTH";
-  char WEST[] = "WEST";
-  char EAST[] = "EAST";
+  char NORTH = 'N';
+  char SOUTH = 'S';
+  char WEST = 'W';
+  char EAST = 'E';
 
   outside->setExit(NORTH, mainOffice);
 
@@ -159,44 +165,36 @@ int main() {
   vector<Item*> inventory;
 
   // instantiate items and add to vector
-  char slipDesc[] = "Slip";
+  char slipDesc[] = "Slip\0";
   Item* slip = new Item(slipDesc);
-  inventory.push_back(slip);
   mainOffice->setItem(slip);
 
   char robotDesc[] = "Robot";
   Item* robot = new Item(robotDesc);
-  inventory.push_back(robot);
   oneTwenty->setItem(robot);
 
   char protractorDesc[] = "Protractor";
   Item* protractor = new Item(protractorDesc);
-  inventory.push_back(protractor);
   mathClass->setItem(protractor);
 
   char acidDesc[] = "Acid";
   Item* acid = new Item(acidDesc);
-  inventory.push_back(acid);
   scienceClass->setItem(acid);
 
   char bananaDesc[] = "Banana";
   Item* banana = new Item(bananaDesc);
-  inventory.push_back(banana);
   cafeteria->setItem(banana);
 
   char bookDesc[] = "Book";
   Item* book = new Item(bookDesc);
-  inventory.push_back(book);
   library->setItem(book);
 
   char speakersDesc[] = "Speakers";
   Item* speakers = new Item(speakersDesc);
-  inventory.push_back(speakers);
   auditorium->setItem(speakers);
 
   char basketballDesc[] = "Basketball";
   Item* basketball = new Item(basketballDesc);
-  inventory.push_back(basketball);
   gym->setItem(basketball);
 
   // print game instructions
@@ -210,7 +208,7 @@ int main() {
   bool playing = true;
   while (playing) {
     // read in user input
-    cout << "Enter a command: ";
+    cout << endl << "Enter a command: ";
     cin.getline(userCommand, INPUT_LENGTH);
 
     // convert input to uppercase for comparison
@@ -220,24 +218,29 @@ int main() {
 
     // validate input
     if (strcmp(userCommand, "GO") == 0) {
-
+      playing = goRoom(currentRoom, upperGym, inventory);
     } else if (strcmp(userCommand, "GET") == 0) {
-
+      getItem(INPUT_LENGTH, currentRoom, inventory);
     } else if (strcmp(userCommand, "DROP") == 0) {
-
+      dropItem(INPUT_LENGTH, currentRoom, inventory);
     } else if (strcmp(userCommand, "INVENTORY") == 0) {
-
+      printInventory(inventory);
     } else if (strcmp(userCommand, "HELP") == 0) {
-
+      printHelp();
     } else if (strcmp(userCommand, "QUIT") == 0) {
-      // clear vectors
+      // clear rooms vector
       for (Room* ptr : rooms) {
-	delete ptr;
+	if (ptr != nullptr) { // validate ptr
+	  delete ptr;
+	}
       }
       rooms.clear();
 
+      // clear inventory vector
       for (Item* ptr : inventory) {
-	delete ptr;
+	if (ptr != nullptr) { // validate ptr
+	  delete ptr;
+	}
       }
       inventory.clear();
       
@@ -250,60 +253,62 @@ int main() {
   return 0;
 }
 
+
 // Define method to print game instructions
 void printGameInstructions(Room*& currentRoom) {
   // instructions
-  cout << "Welcome to Zuul, where you must not be a fool to escape.";
+  cout << "Welcome to Zuul, where you must not be a fool to escape. ";
   cout << "You're currently trapped inside the abandoned Sunset High School campus, "
-       << "where horrors like dangerous bananas and acids lurk the halls.";
+       << "where horrors like dangerous bananas and acids lurk the halls. ";
   cout << "In order to save your life, you must successfully retrieve the "
-       << "robot and make your way to the upper gym.";
-  cout << "Good luck, and may the odds be ever in your favor." << endl;
+       << "robot and make your way to the upper gym. ";
+  cout << "Good luck, and may the odds be ever in your favor." << endl << endl;
   
   // help
-  cout << "Type HELP if you get lost." << endl;
+  cout << "Type HELP if you get lost." << endl << endl;
 
   // current room description
   currentRoom->printLongDescription();
 }
 
+
 /* Enter a new room if there is an exit in the given direction.
    Player wins the game if they are in the upper gym with the Robot item
    in their inventory.
  */
-bool goRoom(const int& INPUT_LENGTH, Room*& currentRoom,
-	    Room*& upperGym, vector<Item*>& inventory) {
+bool goRoom(Room*& currentRoom, Room*& upperGym, vector<Item*>& inventory) {
   // ask user for direction
-  char userDirection[INPUT_LENGTH];
+  char userDirection;
   cout << "Enter a direction: ";
-  cin.getline(userDirection, INPUT_LENGTH);
+  cin >> userDirection;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
   // convert direction input to uppercase for comparison
-  for (int i = 0; i < strlen(userDirection); i++) {
-    userDirection[i] = toupper(userDirection[i]);
-  }
+  userDirection = toupper(userDirection);
 
   // check if exit exists
   bool exitExists = currentRoom->searchDirection(userDirection);
 
   // enter new room if possible
   if (exitExists) {
+    // NOT allocated with new keyword
     Room* newRoom = currentRoom->getExitRoom(userDirection);
     currentRoom = newRoom;
+    cout << endl;
     currentRoom->printLongDescription();
     
     // check for winning condition
     if ((currentRoom == upperGym) && (checkInventory(inventory))) {
-      cout << "Congratulations, you somehow managed to escape!" << endl;
-      delete newRoom;
-      return true;
+      cout << endl << "Congratulations, you somehow managed to escape!" << endl;
+      return false; // game over so no longer playing
     }
   } else {
     cout << "There is no exit in that direction." << endl;
   }
   
-  return false;
+  return true; // still playing
 }
+
 
 // Pick up item from current room and add it to inventory
 void getItem(const int& INPUT_LENGTH, Room*& currentRoom,
@@ -322,9 +327,35 @@ void getItem(const int& INPUT_LENGTH, Room*& currentRoom,
     currentRoom->removeItem(userItem);
     cout << "Picked up: " << newItem->getDescription() << endl;
   }
-
-  delete newItem;
 }
+
+
+// Drop item in current room and remove it from the inventory
+void dropItem(const int& INPUT_LENGTH, Room*& currentRoom,
+	      vector<Item*>& inventory) {
+  // prompt user for item
+  char userItem[INPUT_LENGTH];
+  cout << "Enter an item: ";
+  cin.getline(userItem, INPUT_LENGTH);
+
+  // use erase-remove idiom to mark item for removal
+  auto itemToRemove = remove_if(inventory.begin(), inventory.end(),
+				[&userItem, &currentRoom](Item* ptr) {
+      // check if item in inventory
+      if (strcmp(userItem, ptr->getDescription()) == 0) {
+        // drop item in current room
+        currentRoom->setItem(ptr);
+        cout << "Dropped: " << userItem << endl;
+
+        return true;  // mark item for removal
+      }
+      return false;
+    });
+
+  // erase item from inventory after marked for removal
+  inventory.erase(itemToRemove, inventory.end());
+}
+
 
 // Check if robot item is in the player's inventory
 bool checkInventory(vector<Item*>& inventory) {
@@ -336,6 +367,7 @@ bool checkInventory(vector<Item*>& inventory) {
   return false;
 }
 
+
 // Define method to output items in inventory
 void printInventory(vector<Item*>& inventory) {
   cout << "You are carrying:";
@@ -345,8 +377,11 @@ void printInventory(vector<Item*>& inventory) {
   cout << endl;
 }
 
+
 // Define method to print list of command words
 void printHelp() {
   cout << "You are lost. You are alone. You wander around the campus." << endl;
-  cout << "Your command words are: GO GET DROP INVENTORY HELP QUIT" << endl;
+  cout << "Your command words are: GO GET DROP INVENTORY HELP QUIT." << endl;
+  cout << "Do not enter any characters after a command." << endl;
+  cout << "You will be prompted for all of the required information." << endl;
 }

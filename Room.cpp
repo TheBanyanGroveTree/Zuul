@@ -16,7 +16,7 @@ char* Room::getShortDescription() {
 }
 
 // Define method to add exit from this room
-void Room::setExit(char* direction, Room* neighbor) {
+void Room::setExit(char direction, Room* neighbor) {
   exits[direction] = neighbor;
 }
 
@@ -43,17 +43,12 @@ void Room::printLongDescription() {
 }
 
 // Define method to search for direction key in exits map
-bool Room::searchDirection(char* direction) {
-  auto it = exits.find(direction);
-
-  if (it != exits.end()) { // key found
-    return true;
-  }
-  return false; // key NOT found
+bool Room::searchDirection(char direction) {
+  return (exits.find(direction) != exits.end());
 }
 
 // Define method to return destination room when moving in specified direction
-Room* Room::getExitRoom(char* direction) {
+Room* Room::getExitRoom(char direction) {
   return exits[direction];
 }
 
@@ -62,22 +57,38 @@ void Room::setItem(Item* newItem) {
   items.push_back(newItem);
 }
 
-// define method to return item given it's name
+
+// Define method to return item given it's name
 Item* Room::getItem(char* itemName) {
   for (int i = 0; i < items.size(); i++) {
-    if (strcmp(items[i]->getDescription(), itemName)) {
+    if (strcmp(items[i]->getDescription(), itemName) == 0) {
       return items[i];
     }
   }
   return nullptr;
 }
 
-// define method to remove item from room given it's name
-void Room::removeItem(char* itemName) {
 
+// Define method to remove item from room given it's name
+void Room::removeItem(char* itemName) {
+  // use erase-remove idiom to mark items for removal
+  auto removeItem = remove_if(items.begin(), items.end(), [&itemName](Item* ptr) {
+    return (strcmp(itemName, ptr->getDescription()) == 0);
+  });
+
+  // erase marked items
+  items.erase(removeItem, items.end());
 }
 
-// define destructor
+
+// Define destructor
 Room::~Room() {
-  delete description;
+  // clear items vector
+  for (Item* ptr : items) {
+    if (ptr != nullptr) { // validate ptr
+      delete ptr;
+    }
+  }
+  
+  // do NOT delete description because it's a string literal
 }
