@@ -1,0 +1,1 @@
+Zuul is a simple, text-based adventure game. This rendition takes place in a school and the players must navigate to the Upper Gym and have the Robot item in their inventory to win. Their commands are: GO, GET, DROP, INVENTORY, HELP, and QUIT (end game).

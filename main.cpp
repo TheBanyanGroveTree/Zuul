@@ -18,7 +18,7 @@
 
 using namespace std;
 
-// function prototypes
+// Function prototypes
 void printGameInstructions(Room*& currentRoom);
 bool goRoom(Room*& currentRoom, Room*& upperGym, vector<Item*>& inventory);
 bool checkInventory(vector<Item*>& inventory);
@@ -216,7 +216,7 @@ int main() {
       userCommand[i] = toupper(userCommand[i]);
     }
 
-    // validate input
+    // validate input and call appropriate methods
     if (strcmp(userCommand, "GO") == 0) {
       playing = goRoom(currentRoom, upperGym, inventory);
     } else if (strcmp(userCommand, "GET") == 0) {
@@ -318,13 +318,13 @@ void getItem(const int& INPUT_LENGTH, Room*& currentRoom,
   cout << "Enter an item: ";
   cin.getline(userItem, INPUT_LENGTH);
 
+  // check if item exists
   Item* newItem = currentRoom->getItem(userItem);
-
   if (newItem == nullptr) {
     cout << "That item is not here." << endl;
   } else {
-    inventory.push_back(newItem);
-    currentRoom->removeItem(userItem);
+    inventory.push_back(newItem); // add to inventory
+    currentRoom->removeItem(userItem); // remove from current room
     cout << "Picked up: " << newItem->getDescription() << endl;
   }
 }

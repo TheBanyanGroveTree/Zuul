@@ -72,7 +72,8 @@ Item* Room::getItem(char* itemName) {
 // Define method to remove item from room given it's name
 void Room::removeItem(char* itemName) {
   // use erase-remove idiom to mark items for removal
-  auto removeItem = remove_if(items.begin(), items.end(), [&itemName](Item* ptr) {
+  auto removeItem = remove_if(items.begin(), items.end(),
+			      [&itemName](Item* ptr) {
     return (strcmp(itemName, ptr->getDescription()) == 0);
   });
 
